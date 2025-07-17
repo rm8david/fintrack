@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    /*    Endpoint to get a user by email and password,
+     returning the user object with the password set to null
+     before returning the response */
     @GetMapping("/get")
     public ResponseEntity<?> getUser(@RequestParam String email, @RequestParam String password) {
         try {
@@ -31,10 +35,17 @@ public class UserController {
                     .body(new ErrorResponse("Internal Server Error: " + ex.getMessage()));
         }
     }
+
+    /*
+    Endpoint to add a new user, it sets the password to null before returning the response.
+
+     */
     @PostMapping("/add")
     public ResponseEntity<?> addUser(@RequestBody User user){
         try{
-            return new ResponseEntity<>(userService.addUser(user), HttpStatus.OK);
+            userService.addUser(user);
+            user.setPassword(null); // Clear password before returning
+            return ResponseEntity.ok(user);
         }catch (DataIntegrityViolationException ex){
             if(ex.getMessage() != null && ex.getMessage().contains("users_unique")){
                 return ResponseEntity
@@ -46,7 +57,10 @@ public class UserController {
                     .body(new ErrorResponse("Internal Server Error: " + ex.getMessage()));
         }
     }
-
+    /*
+    Endpoint to delete a user by email and password,
+    returning a success message if the user is deleted
+     */
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteUser(@RequestParam String email, @RequestParam String password) {
         try {
@@ -62,7 +76,7 @@ public class UserController {
                     .body(new ErrorResponse("Internal Server Error: " + ex.getMessage()));
         }
     }
-
+    // For updating the user's email, it checks if the user exists and if the password matches
     @PutMapping("/updateName")
     public ResponseEntity<?> updateName(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
         try {
@@ -78,4 +92,6 @@ public class UserController {
                     .body(new ErrorResponse("Internal Server Error: " + ex.getMessage()));
         }
     }
+
+
 }
