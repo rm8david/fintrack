@@ -26,4 +26,23 @@ public class AccountController {
         account.getUser().setPassword(null); // Clear password before returning
         return ResponseEntity.ok(account);
     }
+
+    @GetMapping("/get")
+    public ResponseEntity<?> getAccountByName(@RequestParam String name) {
+        Account account = accountService.getAccountByName(name);
+        if (account == null) {
+            return ResponseEntity.status(404).body("Error: Account not found");
+        }
+        account.getUser().setPassword(null);
+        return ResponseEntity.ok(account);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteAccount(@RequestParam String name) {
+        int deletedCount = accountService.deleteAccount(name);
+        if (deletedCount == 0) {
+            return ResponseEntity.status(404).body("Error: Account not found");
+        }
+        return ResponseEntity.ok("Account deleted successfully");
+    }
 }
