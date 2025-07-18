@@ -22,20 +22,11 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private AccountService accountService;
 
     @PostMapping("/add")
-    public Transaction addTransaction(@RequestBody Transaction transaction, @RequestParam Long userId,
-                                     @RequestParam Long categoryId, @RequestParam Long accountId) {
+    public Transaction addTransaction(@RequestBody Transaction transaction, @RequestParam Long accountId) {
 
-        transaction.setUser(userService.getUserById(userId));
-        transaction.setCategory(categoryService.getCategoryById(categoryId));
         Account account = accountService.getAccountById(accountId);
 
         // Actualiza el balance según el tipo de transacción
@@ -49,7 +40,9 @@ public class TransactionController {
 
         transaction.setAccount(account);
         transaction.setDate(LocalDateTime.now());
-        return transactionService.addTransaction(transaction);
+        transactionService.addTransaction(transaction);
+        transaction.getAccount().getUser().setPassword(null); // Clear password before returning
+        return transaction;
     }
     @GetMapping("/byAccount")
     public List<TransactionDTO> getTransactionsByAccount (@RequestParam Long accountId){

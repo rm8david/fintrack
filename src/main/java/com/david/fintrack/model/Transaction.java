@@ -28,23 +28,18 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
-    public Transaction(double amount, String description) {
+
+    public Transaction(double amount, String description, CategoryType type) {
         this.amount = amount;
         this.description = description;
+        this.type = type;
     }
 
-    public Transaction(double amount, String description, Account account, Category category, User user) {
+    public Transaction(double amount, String description, CategoryType type, Account account) {
         this.amount = amount;
         this.description = description;
+        this.type = type;
         this.account = account;
-        this.category = category;
-        this.user = user;
     }
 }
