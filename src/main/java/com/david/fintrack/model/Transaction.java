@@ -21,6 +21,7 @@ public class Transaction {
     private long id;
     private double amount;
     private String description;
+    @Enumerated(EnumType.STRING)
     private CategoryType type;
     @Column(name = "transaction_date", nullable = false)
     private LocalDateTime date;

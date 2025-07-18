@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TransactionServImp implements TransactionService{
     @Autowired
@@ -24,13 +26,17 @@ public class TransactionServImp implements TransactionService{
                 .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + id));
     }
     //TODO: Implement method to get transaction by amount
-    @Override
-    public Transaction getTransactionByAmount(Double amount) {
-        return transactionRepository.findFirstByAmountGreaterThan(amount);
-    }
+
 
     @Override
     public void deleteTransactionById(Long id) {
         transactionRepository.deleteById(id);
     }
+
+    @Override
+    public List<Transaction> getTransactionsByAccountId(Long accountId) {
+        return transactionRepository.findByAccountId(accountId);
+    }
+
+
 }

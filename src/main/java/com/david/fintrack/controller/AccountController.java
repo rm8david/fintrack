@@ -1,5 +1,6 @@
 package com.david.fintrack.controller;
 
+import com.david.fintrack.dto.AccountDTO;
 import com.david.fintrack.model.Account;
 import com.david.fintrack.model.User;
 import com.david.fintrack.service.AccountService;
@@ -7,6 +8,9 @@ import com.david.fintrack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/accounts")
@@ -35,6 +39,18 @@ public class AccountController {
         }
         account.getUser().setPassword(null);
         return ResponseEntity.ok(account);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<AccountDTO>> getAllAccounts() {
+        return ResponseEntity.ok(accountService.getAllAccounts()
+                .stream()
+                .map(account -> new AccountDTO(
+                        account.getId(),
+                        account.getName(),
+                        account.getType(),
+                        account.getCurrency()))
+                .collect(Collectors.toList()));
     }
 
     @DeleteMapping("/delete")

@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserServImpl implements UserService{
     @Autowired
@@ -25,6 +27,12 @@ public class UserServImpl implements UserService{
         return null;
 
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll(); // Return all users from the repository
+    }
+
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null); // Return null if user not found

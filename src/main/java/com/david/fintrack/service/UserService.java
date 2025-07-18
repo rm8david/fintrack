@@ -3,6 +3,8 @@ package com.david.fintrack.service;
 import com.david.fintrack.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 public interface UserService {
     User addUser(User user);
@@ -14,4 +16,6 @@ public interface UserService {
     User getUserById(Long id);
     // Get user by email and password
     User getUserByEmailAndPassword(String email, String password);
+
+    List<User> getAllUsers();
 }

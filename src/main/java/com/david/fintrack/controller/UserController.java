@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -36,10 +38,15 @@ public class UserController {
         }
     }
 
-    /*
-    Endpoint to add a new user, it sets the password to null before returning the response.
 
-     */
+    @GetMapping("/getAll")
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> users = userService.getAllUsers();
+        for (User user : users) {
+            user.setPassword(null); // Clear password before returning
+        }
+        return ResponseEntity.ok(users);
+    }
     @PostMapping("/add")
     public ResponseEntity<?> addUser(@RequestBody User user){
         try{

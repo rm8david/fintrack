@@ -1,5 +1,6 @@
 package com.david.fintrack.controller;
 
+import com.david.fintrack.dto.TransactionDTO;
 import com.david.fintrack.model.Account;
 import com.david.fintrack.model.CategoryType;
 import com.david.fintrack.model.Transaction;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/transactions")
@@ -48,4 +51,17 @@ public class TransactionController {
         transaction.setDate(LocalDateTime.now());
         return transactionService.addTransaction(transaction);
     }
+    @GetMapping("/byAccount")
+    public List<TransactionDTO> getTransactionsByAccount (@RequestParam Long accountId){
+        return transactionService.getTransactionsByAccountId(accountId)
+                .stream()
+                .map(t -> new TransactionDTO(
+                        t.getId(),
+                        t.getAmount(),
+                        t.getDescription(),
+                        t.getType(),
+                        t.getDate()))
+                .collect(Collectors.toList());
+    }
+
 }

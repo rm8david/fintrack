@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class AccountServImp implements AccountService{
 
@@ -31,5 +33,10 @@ public class AccountServImp implements AccountService{
     @Override
     public Account getAccountById(Long accountId) {
         return accountRepository.getAccountById(accountId);
+    }
+
+    @Override
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
     }
 }
