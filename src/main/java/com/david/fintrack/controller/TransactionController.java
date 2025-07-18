@@ -1,0 +1,51 @@
+package com.david.fintrack.controller;
+
+import com.david.fintrack.model.Account;
+import com.david.fintrack.model.CategoryType;
+import com.david.fintrack.model.Transaction;
+import com.david.fintrack.service.AccountService;
+import com.david.fintrack.service.CategoryService;
+import com.david.fintrack.service.TransactionService;
+import com.david.fintrack.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+
+@RestController
+@RequestMapping("/transactions")
+public class TransactionController {
+    @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @PostMapping("/add")
+    public Transaction addTransaction(@RequestBody Transaction transaction, @RequestParam Long userId,
+                                     @RequestParam Long categoryId, @RequestParam Long accountId) {
+
+        transaction.setUser(userService.getUserById(userId));
+        transaction.setCategory(categoryService.getCategoryById(categoryId));
+        Account account = accountService.getAccountById(accountId);
+
+        // Actualiza el balance según el tipo de transacción
+        double amount = transaction.getAmount();
+        if (transaction.getType() == CategoryType.EXPENSE) {
+            account.setBalance(account.getBalance() - amount);
+        } else {
+            account.setBalance(account.getBalance() + amount);
+        }
+        accountService.addAccount(account); // Guarda la cuenta actualizada
+
+        transaction.setAccount(account);
+        transaction.setDate(LocalDateTime.now());
+        return transactionService.addTransaction(transaction);
+    }
+}

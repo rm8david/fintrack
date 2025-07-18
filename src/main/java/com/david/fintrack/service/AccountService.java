@@ -8,4 +8,6 @@ public interface AccountService {
     Account getAccountByName(String name);
 
     int deleteAccount(String name);
+
+    Account getAccountById(Long accountId);
 }

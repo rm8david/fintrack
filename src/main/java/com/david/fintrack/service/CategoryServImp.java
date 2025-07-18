@@ -21,6 +21,11 @@ public class CategoryServImp implements CategoryService{
         return categoryRepository.deleteByName(name);
     }
 
+    @Override
+    public Category getCategoryById(Long id) {
+        return categoryRepository.getCategoryById(id);
+    }
+
     //TODO implement method to update category
 
     @Override

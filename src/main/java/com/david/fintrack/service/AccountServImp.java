@@ -27,4 +27,9 @@ public class AccountServImp implements AccountService{
     public int deleteAccount(String name) {
         return accountRepository.deleteByName(name);
     }
+
+    @Override
+    public Account getAccountById(Long accountId) {
+        return accountRepository.getAccountById(accountId);
+    }
 }

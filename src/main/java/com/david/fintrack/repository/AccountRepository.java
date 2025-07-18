@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query("SELECT a FROM Account a WHERE a.name = :name")
     Account getAccountByName(String name);
+    Account getAccountById(Long id);
 
     int deleteByName(String name);
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Transactional
     int deleteByName(String name);
@@ -16,4 +17,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Transactional
     @Query("UPDATE Category c SET c.name = :newName WHERE c.name = :name")
     int updateCategoryName(String name, String newName);
+
+    Category getCategoryById(Long id);
 }
