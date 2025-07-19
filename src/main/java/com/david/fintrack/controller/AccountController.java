@@ -23,39 +23,36 @@ public class AccountController {
     private UserService userService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addAccount(@RequestBody Account account, @RequestParam Long id) {
-        User user = userService.getUserById(id);
+    public ResponseEntity<?> addAccount(@RequestBody Account account, @RequestParam Long userId) {
+        User user = userService.getUserById(userId);
         account.setUser(user);
         accountService.addAccount(account);
         account.getUser().setPassword(null); // Clear password before returning
         return ResponseEntity.ok(account);
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<?> getAccountByName(@RequestParam String name) {
-        Account account = accountService.getAccountByName(name);
+    @GetMapping("/getByName")
+    public ResponseEntity<?> getAccountByName(@RequestParam String name,@RequestParam long userId) {
+        Account account = accountService.getAccountByName( name, userId);
         if (account == null) {
             return ResponseEntity.status(404).body("Error: Account not found");
         }
         account.getUser().setPassword(null);
         return ResponseEntity.ok(account);
     }
-
+    // get all accounts by user id
     @GetMapping("/getAll")
-    public ResponseEntity<List<AccountDTO>> getAllAccounts() {
-        return ResponseEntity.ok(accountService.getAllAccounts()
-                .stream()
-                .map(account -> new AccountDTO(
-                        account.getId(),
-                        account.getName(),
-                        account.getType(),
-                        account.getCurrency()))
-                .collect(Collectors.toList()));
+    public ResponseEntity<List<AccountDTO>> getAllAccounts( @RequestParam long userId) {
+        List<Account> accounts = accountService.getAllAccounts(userId);
+        List<AccountDTO> dtos = accounts.stream()
+                .map(AccountDTO::new)
+                .collect(Collectors.toList());
+        return  ResponseEntity.ok(dtos);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteAccount(@RequestParam String name) {
-        int deletedCount = accountService.deleteAccount(name);
+    public ResponseEntity<?> deleteAccount(@RequestParam String name, @RequestParam long userId) {
+        int deletedCount = accountService.deleteAccount(name, userId);
         if (deletedCount == 0) {
             return ResponseEntity.status(404).body("Error: Account not found");
         }

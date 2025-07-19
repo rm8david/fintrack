@@ -17,9 +17,10 @@ public class CategoryServImp implements CategoryService{
     }
 
     @Override
-    public int deleteByName(String name) {
-        return categoryRepository.deleteByName(name);
+    public int deleteByNameAndUserId(String name, long userId) {
+        return categoryRepository.deleteByNameAndUserId( name, userId);
     }
+
 
     @Override
     public Category getCategoryById(Long id) {
@@ -29,13 +30,13 @@ public class CategoryServImp implements CategoryService{
     //TODO implement method to update category
 
     @Override
-    public Category getCategoryByName(String name) {
-        return categoryRepository.getCategoryByName(name);
+    public Category getCategoryByName(String name, long userId) {
+        return categoryRepository.getCategoryByName(name, userId);
     }
 
     @Override
-    public int updateCategoryName(String name, String newName) {
-        return categoryRepository.updateCategoryName(name, newName);
+    public int updateCategoryName(String name, String newName, long userId) {
+        return categoryRepository.updateCategoryName(name, newName, userId);
     }
 
 

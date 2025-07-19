@@ -8,11 +8,12 @@ import java.util.List;
 public interface AccountService {
     Account addAccount(Account account);
 
-    Account getAccountByName(String name);
 
-    int deleteAccount(String name);
+    Account getAccountByName(String name, long userId);
+
+    int deleteAccount(String name, long userId);
 
     Account getAccountById(Long accountId);
 
-    List<Account> getAllAccounts();
+    List<Account> getAllAccounts(long userId);
 }

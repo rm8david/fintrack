@@ -44,17 +44,14 @@ public class TransactionController {
         transaction.getAccount().getUser().setPassword(null); // Clear password before returning
         return transaction;
     }
+
     @GetMapping("/byAccount")
     public List<TransactionDTO> getTransactionsByAccount (@RequestParam Long accountId){
         return transactionService.getTransactionsByAccountId(accountId)
                 .stream()
-                .map(t -> new TransactionDTO(
-                        t.getId(),
-                        t.getAmount(),
-                        t.getDescription(),
-                        t.getType(),
-                        t.getDate()))
+                .map(TransactionDTO::new)
                 .collect(Collectors.toList());
     }
+
 
 }

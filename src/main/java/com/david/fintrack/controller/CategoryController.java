@@ -18,20 +18,21 @@ public class CategoryController {
     private UserService userService;
 
     @GetMapping("/get")
-    public ResponseEntity<?> getCategoryByName(@RequestParam String name) {
-        Category category = categoryService.getCategoryByName(name);
+    public ResponseEntity<?> getCategoryByName(@RequestParam String name, @RequestParam long userId) {
+        Category category = categoryService.getCategoryByName(name, userId);
         if (category == null) {
             return ResponseEntity.status(404).body("Error: Category not found");
         }
+        category.getUser().setPassword(null); // Clear password before returning
         return ResponseEntity.ok(category);
     }
     /* Endpoint to add a new category with a related user ID and setting the user
     password to null
     before returning the response */
     @PostMapping("/add")
-    public ResponseEntity<?> addCategory(@RequestBody Category category, @RequestParam Long user_id) {
+    public ResponseEntity<?> addCategory(@RequestBody Category category, @RequestParam Long userId) {
         try {
-            User user = userService.getUserById(user_id);
+            User user = userService.getUserById(userId);
             if (user == null) {
                 return ResponseEntity.status(404).body("Usuario no encontrado");
             }
@@ -46,9 +47,9 @@ public class CategoryController {
     }
     // Endpoint to update a category name, return a response indicating success or failure
     @PutMapping("/update")
-    public ResponseEntity<?> updateCategory(@RequestParam String name, @RequestParam String newName) {
+    public ResponseEntity<?> updateCategory(@RequestParam String name, @RequestParam String newName, @RequestParam long userId) {
         try {
-            int updatedCategory = categoryService.updateCategoryName(name, newName);
+            int updatedCategory = categoryService.updateCategoryName(name, newName, userId);
             if (updatedCategory == 0) {
                 return ResponseEntity.status(404).body("Error: Category not found");
             }
@@ -60,9 +61,9 @@ public class CategoryController {
     }
 // Endpoint to delete a category by name, return a response indicating success or failure
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteCategory(@RequestParam String name) {
+    public ResponseEntity<?> deleteCategory(@RequestParam String name, @RequestParam long userId) {
         try {
-            int deletedCount = categoryService.deleteByName(name);
+            int deletedCount = categoryService.deleteByNameAndUserId( name, userId);
             if (deletedCount == 0) {
                 return ResponseEntity.status(404).body("Error: Category not found");
             }

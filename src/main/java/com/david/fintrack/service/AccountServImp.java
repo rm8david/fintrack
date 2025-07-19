@@ -20,14 +20,14 @@ public class AccountServImp implements AccountService{
     }
 
     @Override
-    public Account getAccountByName(String name) {
-        return accountRepository.getAccountByName(name);
+    public Account getAccountByName(String name, long userId) {
+        return accountRepository.getAccountByNameAndUserId( name, userId);
     }
 
     @Override
     @Transactional
-    public int deleteAccount(String name) {
-        return accountRepository.deleteByName(name);
+    public int deleteAccount(String name, long userId) {
+        return accountRepository.deleteByName(name, userId);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class AccountServImp implements AccountService{
     }
 
     @Override
-    public List<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public List<Account> getAllAccounts( long userId) {
+        return accountRepository.findAllByUserId(userId);
     }
 }

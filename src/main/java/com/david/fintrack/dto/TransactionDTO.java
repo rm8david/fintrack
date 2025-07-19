@@ -1,6 +1,7 @@
 package com.david.fintrack.dto;
 
 import com.david.fintrack.model.CategoryType;
+import com.david.fintrack.model.Transaction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,14 +12,15 @@ public class TransactionDTO {
     private long id;
     private double amount;
     private String description;
-    private CategoryType type;
     private LocalDateTime date;
+    private CategoryType type;
 
-    public TransactionDTO(long id, double amount, String description, CategoryType type, LocalDateTime date) {
-        this.id = id;
-        this.amount = amount;
-        this.description = description;
-        this.type = type;
-        this.date = date;
+    // Constructor que mapea desde Transaction
+    public TransactionDTO(Transaction transaction) {
+        this.id = transaction.getId();
+        this.amount = transaction.getAmount();
+        this.description = transaction.getDescription();
+        this.date = transaction.getDate();
+        this.type = transaction.getType();
     }
 }
