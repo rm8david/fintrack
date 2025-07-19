@@ -38,4 +38,12 @@ public class Account {
         this.currency = currency;
         this.user = user;
     }
+
+    public Account(String name, AccountType type, double balance, User user, String currency) {
+        this.name = name;
+        this.type = type;
+        this.balance = balance;
+        this.user = user;
+        this.currency = currency;
+    }
 }
