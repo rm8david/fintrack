@@ -10,4 +10,6 @@ public interface TransactionService {
     void deleteTransactionById(Long id);
 
     List<Transaction> getTransactionsByAccountId(Long accountId);
+
+    int deleteTransactionByIdAndAccountId(Long id, Long accountId);
 }

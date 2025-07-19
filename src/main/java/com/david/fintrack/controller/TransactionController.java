@@ -9,6 +9,7 @@ import com.david.fintrack.service.CategoryService;
 import com.david.fintrack.service.TransactionService;
 import com.david.fintrack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -51,6 +52,15 @@ public class TransactionController {
                 .stream()
                 .map(TransactionDTO::new)
                 .collect(Collectors.toList());
+    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteByNameAndAccountId(@RequestParam Long id, @RequestParam Long accountId) {
+        int deletedCount = transactionService.deleteTransactionByIdAndAccountId(id, accountId);
+        if (deletedCount > 0) {
+            return ResponseEntity.ok("Transaction deleted successfully");
+        } else {
+            return ResponseEntity.status(404).body("Transaction not found");
+        }
     }
 
 

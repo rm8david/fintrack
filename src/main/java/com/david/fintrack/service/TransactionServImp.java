@@ -38,5 +38,10 @@ public class TransactionServImp implements TransactionService{
         return transactionRepository.findByAccountId(accountId);
     }
 
+    @Override
+    public int deleteTransactionByIdAndAccountId(Long id, Long accountId) {
+        return transactionRepository.deleteByIdAndAccountId(id, accountId);
+    }
+
 
 }
